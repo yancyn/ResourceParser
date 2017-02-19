@@ -15,6 +15,7 @@ namespace WPFLocalizeExtensionParser
 
         private string outputFileName;
         private string[] outputFiles;
+        private List<XmlWriter> writers;
 
         public Parser()
         {
@@ -22,6 +23,7 @@ namespace WPFLocalizeExtensionParser
             this.sourceFileName = string.Empty;
             this.outputFileName = string.Empty;
             this.outputFiles = new string[] { };
+            this.writers = new List<XmlWriter>();
         }
         /// <summary>
         /// Recommended constructor.
@@ -34,16 +36,46 @@ namespace WPFLocalizeExtensionParser
             this.sourceFileName = sourceFileName;
             this.outputFileName = outputFileName;
             this.outputFiles = new string[] { };
+            this.writers = new List<XmlWriter>();
         }
         private void GetOutputFiles(string header)
         {
-            string[] headers = header.Split(new char[] { ',' });
+            string[] headers = header.Split(new char[] { '\t' });
             this.outputFiles = new string[headers.Length];
             for (int i = 0; i < outputFiles.Length; i++)
             {
-                string fileName = outputFileName + headers[i] + EXTENSION;
+                string fileName = outputFileName + "." + headers[i].Trim(new char[] { '"' }) + EXTENSION;
                 this.outputFiles[i] = fileName;
+                Console.Write(this.outputFiles[i] + "\t");
+
+                XmlWriter writer = new XmlWriter();
+                this.writers.Add(writer);
             }
+        }
+        private string GetRootWord(string sentence)
+        {
+            string root = sentence;
+            // TODO: Define invalid character in resource identifier
+            string[] invalidCharacters = new string[] { " ", ".", ",", "/", "@", "!", "(", ")", ">", "<", "=", "©" };
+            foreach (string invalidCharacter in invalidCharacters)
+            {
+                root = root.Replace(invalidCharacter, "");
+            }
+
+            return root;
+        }
+        private string Pascalize(string sentence)
+        {
+            string pascal = string.Empty;
+            string[] words = sentence.Split(new char[] { ' ' });
+            foreach (string word in words)
+            {
+                int length = word.Length;
+                pascal += word.Substring(0, 1).ToUpper();
+                pascal += word.Substring(1, length - 1);
+            }
+
+            return pascal;
         }
         public void Process()
         {
@@ -52,18 +84,35 @@ namespace WPFLocalizeExtensionParser
             using (StreamReader reader = new StreamReader(sourceFileName))
             {
                 //source = reader.ReadToEnd();
-                while((line = reader.ReadLine()) != null)
+                while ((line = reader.ReadLine()) != null)
                 {
-                    if (counter == 0) GetOutputFiles(line);
+                    if (counter == 0)
+                    {
+                        GetOutputFiles(line);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Process " + line);
+                        string[] words = line.Split(new char[] { '\t' });
+                        for (int i = 0; i < Math.Min(writers.Count, words.Length); i++)
+                        {
+                            writers[i].AddNode(
+                                GetRootWord(Pascalize(words[0].Trim(new char[] { '"' }))),
+                                words[i].Trim(new char[] { '"' }));
+                        }
+                    }
+
                     builder.AppendLine(line);
                     counter++;
                 }
             }
-            Write();
-        }
-        private void Write()
-        {
 
+            // write to output
+            for (int i = 0; i < outputFiles.Length; i++)
+            {
+                writers[i].Write(outputFiles[i]);
+            }
+            Console.WriteLine("Done");
         }
     }
 }
