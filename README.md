@@ -14,3 +14,6 @@ Split csv to several resource files used in WPFLocalizeExtension.
 
 translation.csv = source file  
 outputs = Strings.en.resx, Strings.es.resx, Strings.de.resx etc
+
+## References
+- https://github.com/SeriousM/WPFLocalizationExtension
