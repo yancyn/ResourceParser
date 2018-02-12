@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("WPFLocalizeExtensionParser")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Plexus Corp.")]
+[assembly: AssemblyCompany("Muje Inc.")]
 [assembly: AssemblyProduct("WPFLocalizeExtensionParser")]
-[assembly: AssemblyCopyright("Copyright © Plexus Corp. 2017")]
+[assembly: AssemblyCopyright("Copyright © Muje Inc. 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
