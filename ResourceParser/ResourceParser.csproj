@@ -7,8 +7,8 @@
     <ProjectGuid>{7A8532DC-EB7C-426E-9FA2-56039E9034B0}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WPFLocalizeExtensionParser</RootNamespace>
-    <AssemblyName>WPFLocalizeExtensionParser</AssemblyName>
+    <RootNamespace>ResourceParser</RootNamespace>
+    <AssemblyName>ResourceParser</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
