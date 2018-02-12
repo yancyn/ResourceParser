@@ -9,7 +9,18 @@ namespace WPFLocalizeExtensionParser
 {
     public class XmlWriter
     {
-        private const string TAB = "  ";
+        public const string TAB = "  ";
+        /// <summary>
+        /// A collection of XML reserved character.
+        /// </summary>
+        /// <seealso cref="https://docs.oracle.com/cd/A97335_02/apps.102/bc4j/developing_bc_projects/obcCustomXml.htm"/>
+        private Dictionary<string, string> ReservedCharacters = new Dictionary<string, string> {
+            { "&", "&#38;" },
+            { "<", "&lt;" },
+            { ">", "&gt;" },
+            { "'", "&#39;" },
+            { "\"", "&#34;" },
+        };
         private StringBuilder builder;
         public XmlWriter()
         {
@@ -142,6 +153,10 @@ namespace WPFLocalizeExtensionParser
         }
         public void AddNode(string root, string translation)
         {
+            // handle reserved characters in xml
+            foreach (KeyValuePair<string, string> word in ReservedCharacters)
+                translation = translation.Replace(word.Key, word.Value);
+
             this.builder.AppendLine(string.Format(TAB + "<data name=\"{0}\" xml:space=\"preserve\">", root));
             this.builder.AppendLine(string.Format(TAB + TAB + "<value>{0}</value>", translation));
             this.builder.AppendLine(TAB + "</data>");
