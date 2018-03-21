@@ -94,9 +94,10 @@ namespace ResourceParser
                         string[] words = line.Split(new char[] { '\t' });
                         for (int i = 0; i < Math.Min(writers.Count, words.Length); i++)
                         {
-                            writers[i].AddNode(
-                                GetRootWord(Pascalize(words[0].Trim(new char[] { '"' }))),
-                                words[i].Trim(new char[] { '"' }));
+                            //string key = GetRootWord(Pascalize(words[0].Trim(new char[] { '"' })));
+                            string key = GetRootWord(words[0].Trim(new char[] { '"' }));
+                            string translation = words[i].Trim(new char[] { '"' });
+                            writers[i].AddNode(key, translation);
                         }
                     }
 
