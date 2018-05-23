@@ -10,6 +10,7 @@ namespace ResourceParser
         private const string EXTENSION = ".resx";
         private StringBuilder builder;
         private string sourceFileName;
+        private bool allowEmpty;
 
         private string outputFileName;
         private string[] outputFiles;
@@ -33,6 +34,15 @@ namespace ResourceParser
             this.builder = new StringBuilder();
             this.sourceFileName = sourceFileName;
             this.outputFileName = outputFileName;
+            this.outputFiles = new string[] { };
+            this.writers = new List<XmlWriter>();
+        }
+        public Parser(string sourceFileName, string outputFileName, bool allowEmpty)
+        {
+            this.builder = new StringBuilder();
+            this.sourceFileName = sourceFileName;
+            this.outputFileName = outputFileName;
+            this.allowEmpty = allowEmpty;
             this.outputFiles = new string[] { };
             this.writers = new List<XmlWriter>();
         }
@@ -96,7 +106,13 @@ namespace ResourceParser
                         {
                             //string key = GetRootWord(Pascalize(words[0].Trim(new char[] { '"' })));
                             string key = GetRootWord(words[0].Trim(new char[] { '"' }));
+                            string primary = string.Empty;
+                            if (words.Length > 1) primary = words[1].Trim(new char[] { '"' });
                             string translation = words[i].Trim(new char[] { '"' });
+                            if (!this.allowEmpty)
+                            {
+                                if (string.IsNullOrEmpty(translation)) translation = primary;
+                            }
                             writers[i].AddNode(key, translation);
                         }
                     }
