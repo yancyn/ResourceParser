@@ -12,10 +12,11 @@ Split csv to several resource files.
 8. Done.
 
 ## How to Use
-``cmd> ResourceParser.exe -s translation.csv -o Strings``
+``cmd> ResourceParser.exe -s translation.csv -o Strings -empty``
 
 translation.csv = source file  
-outputs = Strings.en.resx, Strings.es.resx, Strings.de.resx etc
+outputs = Strings.en.resx, Strings.es.resx, Strings.de.resx etc  
+-empty = optional. If not provided blank translation will be replaced by first language after key column.
 
 ## References
 - https://github.com/SeriousM/WPFLocalizationExtension
